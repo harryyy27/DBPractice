@@ -10,6 +10,10 @@ const router = (req, res) => {
 
     handler.publicHandler(req,res);
   }
+  else {
+    res.writeHead(500, {'Content-Type': 'text/html'}, "you've been hacked")
+    res.end();
+  }
 }
 
 module.exports = router;

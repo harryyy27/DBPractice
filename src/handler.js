@@ -10,18 +10,11 @@ const buildPath = (file) => {
 const handler = {
    indexHandler: (req, res) => {
     fs.readFile(buildPath('index.html'),(err, file) => {
-      if (err) {
-        res.writeHead(500,{ 'Content-Type' : 'text/html' });
-        res.end('Sorry, we could not retrieve the web page');
-        console.log(err);
-      } else {
         res.writeHead(200, { 'Content-Type' : 'text/html' });
         res.end(file);
-      }
     });
   },
   publicHandler: (req, res) => {
-
     const ext= req.url.split('.')[1];
     const url = req.url.split('/')[2];
     const cType = {
@@ -36,7 +29,7 @@ const handler = {
         console.log(err);
       }
       else {
-        res.writeHead(200, {'Content-Type': 'cType[ext]'});
+        res.writeHead(200, {'Content-Type': `${cType[ext]}`});
         res.end(file);
       }
 
