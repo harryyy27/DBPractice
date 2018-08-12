@@ -8,20 +8,27 @@ const buildPath = (file) => {
 
 //build object containing handler functions
 const handler = {
-   indexHandler: (req, res) => {
+  cType: {
+    html: 'text/html',
+    css: 'text/css',
+    js: 'application/javascript',
+  },
+   indexHandler: (req,res) => {
     fs.readFile(buildPath('index.html'),(err, file) => {
+      if (err){
+        res.writeHead(500, {'Content-Type': 'text/html'}, "you've been hacked")
+        res.end();
+        console.log(err);
+      }
+      else {
         res.writeHead(200, { 'Content-Type' : 'text/html' });
         res.end(file);
-    });
+    }
+  });
   },
   publicHandler: (req, res) => {
     const ext= req.url.split('.')[1];
     const url = req.url.split('/')[2];
-    const cType = {
-      html: 'text/html',
-      css: 'text/css',
-      js: 'application/javascript',
-    };
     fs.readFile(buildPath(`${url}`), (err,file) => {
       if(err) {
         res.writeHead(500, {'Content-Type': 'text/html'});
@@ -29,7 +36,7 @@ const handler = {
         console.log(err);
       }
       else {
-        res.writeHead(200, {'Content-Type': `${cType[ext]}`});
+        res.writeHead(200, {'Content-Type': `${handler.cType[ext]}`});
         res.end(file);
       }
 
